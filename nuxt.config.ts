@@ -5,4 +5,10 @@ export default defineNuxtConfig({
   modules: [
     '@nuxthq/ui'
   ],
+
+  build: {
+    transpile: [
+      'vcard-creator'
+    ]
+  }
 })
