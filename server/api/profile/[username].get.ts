@@ -4,5 +4,14 @@ export default defineEventHandler(async (event) => {
     return createError("No username")
   }
 
-  return event.context.profileStorage.getItem(username)
+  try {
+    const data = await event.context.profileStorage.getItem(username)
+    if (!data) {
+      return "No data"
+    }
+
+    return data
+  } catch (err) {
+    return JSON.stringify(err)
+  }
 })
