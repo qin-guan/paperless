@@ -11,12 +11,15 @@ declare module 'h3' {
 }
 
 export default defineEventHandler(async (event) => {
+  if (isDevelopment) {
+    event.context.profileStorage = createStorage()
+    return
+  }
+
   const { cloudflare } = event.context
   const KV_PAPERLESS = await cloudflare.env.KV_PAPERLESS
 
-  event.context.profileStorage = isDevelopment
-    ? createStorage()
-    : createStorage({
+  event.context.profileStorage = createStorage({
       driver: cloudflareKVBindingDriver({ binding: KV_PAPERLESS })
     })
 })

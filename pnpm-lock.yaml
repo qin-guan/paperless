@@ -20,6 +20,9 @@ devDependencies:
   std-env:
     specifier: ^3.3.3
     version: 3.3.3
+  vcard-creator:
+    specifier: ^0.6.0
+    version: 0.6.0
 
 packages:
 
@@ -7413,6 +7416,10 @@ packages:
   /vary@1.1.2:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
+    dev: true
+
+  /vcard-creator@0.6.0:
+    resolution: {integrity: sha512-X++vIvcdydbsf+5eLMzS/xRmDQ+cQmceqSJCTBdMNQUzZfYjiiksyuwraWxqJ4N94ZzQoCbqhZ20XN9wXYJ3jg==}
     dev: true
 
   /vite-node@0.33.0(@types/node@18.17.1):
