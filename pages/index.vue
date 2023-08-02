@@ -1,25 +1,19 @@
 <script setup lang="ts">
-
-/*
-  // Add personal data
-  .addName(lastname, firstname, additional, prefix, suffix)
-  // Add work data
-  .addCompany('Siesqo')
-  .addJobtitle('Web Developer')
-  .addRole('Data Protection Officer')
-  .addEmail('info@jeroendesloovere.be')
-  .addPhoneNumber(1234121212, 'PREF;WORK')
-  .addPhoneNumber(123456789, 'WORK')
-  .addAddress(null, null, 'street', 'worktown', null, 'workpostcode', 'Belgium')
-  .addSocial('https://twitter.com/desloovere_j', 'Twitter', 'desloovere_j')
-  .addURL('http://www.jeroendesloovere.be')
-*/
+const state = reactive<{
+  pending: boolean,
+  error?: string,
+  profileLink?: string
+  downloadLink?: string
+}>({
+  pending: false,
+})
 
 async function create(event: Event) {
   const formData = new FormData(event.target as HTMLFormElement)
 
   const data = {
     username: formData.get('username'),
+    password: formData.get('password'),
     namePrefix: formData.get('namePrefix'),
     firstName: formData.get('firstName'),
     lastName: formData.get('lastName'),
@@ -30,10 +24,23 @@ async function create(event: Event) {
     phoneNumber: formData.get('phoneNumber'),
   }
 
-  await $fetch('/api/profile', {
-    method: 'POST',
-    body: data
-  })
+  try {
+    const res = await $fetch<{
+      profileLink: string
+      downloadLink: string
+    }>('/api/profile', {
+      method: 'POST',
+      body: data
+    })
+
+    state.profileLink = res.profileLink
+    state.downloadLink = res.downloadLink
+
+  } catch (err) {
+    state.error = JSON.stringify(err)
+  } finally {
+    state.pending = false
+  }
 }
 </script>
 
@@ -43,6 +50,7 @@ async function create(event: Event) {
 
     <form @submit.prevent="create($event)" class="space-y-4">
       <UInput name="username" placeholder="Username" />
+      <UInput name="password" placeholder="Password (optional)" />
 
       <UInput name="namePrefix" placeholder="Name prefix" />
       <UInput name="firstName" placeholder="First name" />
@@ -55,7 +63,19 @@ async function create(event: Event) {
       <UInput name="email" placeholder="Email" />
       <UInput name="phoneNumber" placeholder="Phone number" />
 
-      <UButton type="submit">Submit</UButton>
+      <UButton type="submit" :loading="state.pending">Submit</UButton>
+
+      <span v-if="state.downloadLink">
+        {{ state.downloadLink }}
+      </span>
+
+      <span v-if="state.profileLink">
+        {{ state.profileLink }}
+      </span>
+
+      <span class="text-red-500" v-if="state.error">
+        {{ state.error }}
+      </span>
     </form>
   </UContainer>
 </template>

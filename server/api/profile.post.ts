@@ -1,19 +1,8 @@
 import VCard from 'vcard-creator'
+import { Profile } from '../../shared/types'
 
 export default defineEventHandler(async (event) => {
-  const body = await readBody<{
-    username: string
-    namePrefix: string
-    firstName: string
-    lastName: string
-    companyName: string
-    companyAddress: string
-    jobTitle: string
-    email: string
-    phoneNumber: string
-  }>(event)
-
-  console.log(body)
+  const body = await readBody<Profile>(event)
 
   const card = new VCard()
   
@@ -25,7 +14,22 @@ export default defineEventHandler(async (event) => {
   .addEmail(body.email)
   .addPhoneNumber(body.phoneNumber)
 
-  await event.context.profileStorage.setItem(body.username, card.toString())
+  if (await event.context.profileStorage.hasItem(body.username)) {
+    const item = await event.context.profileStorage.getMeta(body.username) as Profile
+    if (item.password !== body.password) {
+      return createError({
+        statusCode: 403,
+        statusMessage: 'Unauthorized',
+        message: 'Wrong password'
+      })
+    }
+  }
 
-  return await event.context.profileStorage.getItem(body.username)
+  await event.context.profileStorage.setItem(body.username, card.toString())
+  await event.context.profileStorage.setMeta(body.username, body)
+
+  return { 
+    downloadLink: `/api/profile/${body.username}`,
+    profileLink: `/p/${body.username}`
+  }
 })

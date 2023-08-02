@@ -7,10 +7,11 @@ export default defineEventHandler(async (event) => {
   try {
     const data = await event.context.profileStorage.getItem(username)
     if (!data) {
-      return "No data"
+      return createError({ statusCode: 404, statusMessage: 'Not found' })
     }
 
     setHeader(event, 'Content-Disposition', `attachment; filename="${username}.vcf"`)
+    setHeader(event, 'Content-Type', 'text/vcf')
 
     return data
   } catch (err) {
