@@ -10,5 +10,11 @@ export default defineNuxtConfig({
     transpile: [
       'vcard-creator'
     ]
+  },
+
+  routeRules: {
+    '/': {
+      prerender: true
+    }
   }
 })
