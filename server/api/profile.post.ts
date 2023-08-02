@@ -13,6 +13,8 @@ export default defineEventHandler(async (event) => {
     phoneNumber: string
   }>(event)
 
+  console.log(body)
+
   const card = new VCard()
   
   card
@@ -25,7 +27,5 @@ export default defineEventHandler(async (event) => {
 
   await event.context.profileStorage.setItem(body.username, card.toString())
 
-  return {
-    ok: true
-  }
+  return await event.context.profileStorage.getItem(body.username)
 })

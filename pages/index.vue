@@ -16,7 +16,7 @@
 */
 
 async function create(event: Event) {
-  const formData = new FormData((event.target as HTMLFormElement))
+  const formData = new FormData(event.target as HTMLFormElement)
 
   const data = {
     username: formData.get('username'),
@@ -42,18 +42,18 @@ async function create(event: Event) {
     <h1 class="font-semibold my-4">Paperless</h1>
 
     <form @submit.prevent="create($event)" class="space-y-4">
-      <UInput id="username" placeholder="Username" />
+      <UInput name="username" placeholder="Username" />
 
-      <UInput id="namePrefix" placeholder="Name prefix" />
-      <UInput id="firstName" placeholder="First name" />
-      <UInput id="lastName" placeholder="Last name" />
+      <UInput name="namePrefix" placeholder="Name prefix" />
+      <UInput name="firstName" placeholder="First name" />
+      <UInput name="lastName" placeholder="Last name" />
 
-      <UInput id="companyName" placeholder="Company name" />
-      <UInput id="companyAddress" placeholder="Company address" />
-      <UInput id="jobTitle" placeholder="Job title" />
+      <UInput name="companyName" placeholder="Company name" />
+      <UInput name="companyAddress" placeholder="Company address" />
+      <UInput name="jobTitle" placeholder="Job title" />
 
-      <UInput id="email" placeholder="Email" />
-      <UInput id="phoneNumber" placeholder="Phone number" />
+      <UInput name="email" placeholder="Email" />
+      <UInput name="phoneNumber" placeholder="Phone number" />
 
       <UButton type="submit">Submit</UButton>
     </form>

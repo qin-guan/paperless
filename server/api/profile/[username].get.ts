@@ -10,6 +10,8 @@ export default defineEventHandler(async (event) => {
       return "No data"
     }
 
+    setHeader(event, 'Content-Disposition', `attachment; filename="${username}.vcf"`)
+
     return data
   } catch (err) {
     return JSON.stringify(err)
