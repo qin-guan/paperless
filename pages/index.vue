@@ -2,8 +2,6 @@
 const state = reactive<{
   pending: boolean,
   error?: string,
-  profileLink?: string
-  downloadLink?: string
 }>({
   pending: false,
 })
@@ -25,7 +23,7 @@ async function create(event: Event) {
   }
 
   try {
-    const res = await $fetch<{
+    await $fetch<{
       profileLink: string
       downloadLink: string
     }>('/api/profile', {
@@ -33,8 +31,7 @@ async function create(event: Event) {
       body: data
     })
 
-    state.profileLink = res.profileLink
-    state.downloadLink = res.downloadLink
+    await navigateTo(`https://paperless-next.pages.dev/p/${data.username}`, { external: true })
 
   } catch (err) {
     state.error = JSON.stringify(err)
@@ -64,14 +61,6 @@ async function create(event: Event) {
       <UInput name="phoneNumber" placeholder="Phone number" />
 
       <UButton type="submit" :loading="state.pending">Submit</UButton>
-
-      <span v-if="state.downloadLink">
-        {{ state.downloadLink }}
-      </span>
-
-      <span v-if="state.profileLink">
-        {{ state.profileLink }}
-      </span>
 
       <span class="text-red-500" v-if="state.error">
         {{ state.error }}

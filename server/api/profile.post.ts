@@ -28,8 +28,5 @@ export default defineEventHandler(async (event) => {
   await event.context.profileStorage.setItem(body.username, card.toString())
   await event.context.profileStorage.setMeta(body.username, body)
 
-  return { 
-    downloadLink: `/api/profile/${body.username}`,
-    profileLink: `/p/${body.username}`
-  }
+  return { ok: true } 
 })
