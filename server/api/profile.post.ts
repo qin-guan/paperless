@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
   .addEmail(body.email)
   .addPhoneNumber(body.phoneNumber)
 
-  event.context.profileStorage.setItem(body.username, card.toString())
+  await event.context.profileStorage.setItem(body.username, card.toString())
 
   return {
     ok: true
