@@ -31,7 +31,7 @@ async function create(event: Event) {
       body: data
     })
 
-    await navigateTo(`https://paperless-next.pages.dev/p/${data.username}`, { external: true })
+    await navigateTo(`https://paperless-nextjs.pages.dev/p/${data.username}`, { external: true })
 
   } catch (err) {
     state.error = JSON.stringify(err)
